@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Universal Compiler Analyzer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Universal Compiler Analyzer</h1>
+      <p>Analyze lexical, syntax, and semantic phases for any programming language</p>
+      <p>Created by Coderz</p>
+    </header>
+
+    <div class="controls">
+      <div class="file-upload">
+        <input type="file" id="fileInput" accept=".c,.cpp,.java,.py,.js,.ts,.go,.rs,.php,.rb,.swift,.kt,.cs,text/plain" />
+        <button id="openFileBtn" class="btn btn-primary">
+          <span id="fileName">Upload Source Code</span>
+        </button>
+      </div>
+
+      <div class="phase-buttons">
+        <button id="lexicalBtn" class="phase-btn" disabled>
+          <span class="icon">Token</span> Lexical Analysis
+        </button>
+        <button id="syntaxBtn" class="phase-btn" disabled>
+          <span class="icon">Tree</span> Syntax Analysis
+        </button>
+        <button id="semanticBtn" class="phase-btn" disabled>
+          <span class="icon">Checkmark</span> Semantic Analysis
+        </button>
+        <button id="clearBtn" class="btn btn-danger">Clear All</button>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div class="progress-label">Ready — Upload a file to begin</div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Source Code <span id="langBadge" class="lang-badge">Unknown</span></h3>
+        </div>
+        <pre><code id="codeArea" class="code-display" contenteditable="false"></code></pre>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Analysis Output</h3>
+          <div class="copy-btn" id="copyBtn" title="Copy result">Copy</div>
+        </div>
+        <pre><code id="resultArea" class="result-display"></code></pre>
+      </div>
+    </div>
+
+    <footer>
+      <small>Universal Compiler Analyzer • Educational Tool • Supports C, C++, Java, Python, JavaScript, and more</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
