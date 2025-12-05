@@ -15,7 +15,7 @@ export default function syntaxAnalyzer(tokens) {
     let validDeclarations = 0;
     let i = 0;
     for(const token of tokens) {
-
+        console.log(`Current Rule: ${rules[i]}, Current Token: ${token.type} ('${token.value}')`);
         if(rules[i] === token.type) {
 
             // After successfully scanning the SEPARATOR rule, start over from index 0.

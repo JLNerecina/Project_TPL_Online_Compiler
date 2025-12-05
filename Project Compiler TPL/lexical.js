@@ -62,7 +62,7 @@ export default function lexicalAnalyzer(sourceCode) {
             }
         }
         if (!matched) {
-            tokens.push({ type: 'UNKNOWN', value: sourceCode[current] });
+            tokens.push({ type: 'UNKNOWN❌', value: sourceCode[current] });
             lexicalValid = false;
             current++;
         }

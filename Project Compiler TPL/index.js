@@ -33,7 +33,7 @@ fileInput.addEventListener('change', () => {
     // fileNameSpan.textContent = `Loaded: ${file.name}`;
 
     resetAll();
-    enablePhase(lexicalBtn, null, 0);
+    enablePhase(lexicalBtn, openFileBtn, 0);
     updateProgress(0);
   };
   reader.readAsText(file);
@@ -48,17 +48,22 @@ let tokens = [];
 lexicalBtn.addEventListener('click', () => performLexical());
 function performLexical() {
   tokens = lexicalAnalyzer(sourceCode);
-  resultArea.textContent = tokens
+  if(lexicalValidCheck() == false){  
+    resultArea.textContent = '🛑 Lexical Analysis Failed: Unknown tokens detected.\n\n';
+  }
+  else {
+    resultArea.textContent = '✅ Lexical Analysis Completed Successfully.\n\n';
+    enablePhase(syntaxBtn, lexicalBtn, 1);
+  }
+  resultArea.textContent += tokens
     .map(token => `Type: ${token.type.padEnd(15)} Value: '${token.value}'`)
     .join('\n');
-  lexicalValidCheck();
-  enablePhase(syntaxBtn, lexicalBtn, 1);
 }
 
-let syntaxArray = [];
+
 syntaxBtn.addEventListener('click', () => performSyntax());
 function performSyntax() {
-  syntaxArray = syntaxAnalyzer(tokens);
+  let syntaxArray = 
   resultArea.textContent = syntaxAnalyzer(tokens);
   enablePhase(semanticBtn, syntaxBtn, 2);
 }
@@ -116,6 +121,7 @@ function resetAll(clearCode = false) {
     fileNameSpan.textContent = 'Upload Source Code';
     langBadge.textContent = 'Java';
     fileInput.value = '';
+    openFileBtn.disabled = false;
     // currentLang = 'Unknown';
   } else {
     resultArea.textContent = 'Click "Lexical Analysis" to begin...';

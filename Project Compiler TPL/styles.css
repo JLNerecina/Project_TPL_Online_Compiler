@@ -59,6 +59,12 @@ header p {
 
 #openFileBtn:hover { background: #5052c8; transform: translateY(-2px); }
 
+#openFileBtn:disabled {
+  background-color: #8c8ee0;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .phase-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
