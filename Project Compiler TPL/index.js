@@ -25,7 +25,7 @@ fileInput.addEventListener('change', () => {
   reader.onload = (e) => {
     sourceCode = e.target.result;
     codeArea.textContent = sourceCode;
-    highlightSyntax(sourceCode);
+    // highlightSyntax(sourceCode);
 
     // const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
     // currentLang = langMap[ext] || 'Text';
@@ -41,21 +41,33 @@ fileInput.addEventListener('change', () => {
 
 //Buttons
 import lexicalAnalyzer from "./lexical.js";
-// import syntaxAnalyzer from "./syntax";
+import syntaxAnalyzer from "./syntax";
 // import semanticAnalyzer from "./semantic";
 
+let tokens = [];
 lexicalBtn.addEventListener('click', () => performLexical());
 function performLexical() {
-  const tokens = lexicalAnalyzer(sourceCode);
-  resultArea.textContent = JSON.stringify(tokens, null, 2);
+  tokens = lexicalAnalyzer(sourceCode);
   resultArea.textContent = tokens
     .map(token => `Type: ${token.type.padEnd(15)} Value: '${token.value}'`)
     .join('\n');
-  enablePhase(lexicalBtn, 1);
+  enablePhase(syntaxBtn, 2);
 }
 syntaxBtn.addEventListener('click', () => performSyntax());
+function performSyntax() {
+  resultArea.textContent = syntaxAnalyzer(tokens);
+  enablePhase(semanticBtn, 3);
+}
+
 semanticBtn.addEventListener('click', () => performSemantic());
+function performSemantic() {
+  // Placeholder for semantic analysis
+  resultArea.textContent += '\n\nSemantic Analysis: (Not Implemented)';
+  updateProgress(100);
+}
+
 clearBtn.addEventListener('click', () => resetAll(true));
+
 copyBtn.addEventListener('click', () => {
   navigator.clipboard.writeText(resultArea.textContent);
   copyBtn.textContent = 'Copied!';
@@ -99,25 +111,25 @@ function resetAll(clearCode = false) {
 }
 
 // Basic syntax highlighting
-function highlightSyntax(code) {
-  codeArea.innerHTML = code
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/("([^"]*)")/g, '<span class="string">$1</span>')
-    .replace(/('([^']*)')/g, '<span class="string">$1</span>')
-    .replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>')
-    .replace(/\b(function|class|const|let|var|if|else|for|while|return|import|export|async|await)\b/g, '<span class="keyword">$1</span>')
-    .replace(/\/\/.*/g, '<span class="comment">$&</span>')
-    .replace(/#.*/g, '<span class="comment">$&</span>');
-}
+// function highlightSyntax(code) {
+//   codeArea.innerHTML = code
+//     .replace(/&/g, '&amp;')
+//     .replace(/</g, '&lt;')
+//     .replace(/>/g, '&gt;')
+//     .replace(/("([^"]*)")/g, '<span class="string">$1</span>')
+//     .replace(/('([^']*)')/g, '<span class="string">$1</span>')
+//     .replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>')
+//     .replace(/\b(function|class|const|let|var|if|else|for|while|return|import|export|async|await)\b/g, '<span class="keyword">$1</span>')
+//     .replace(/\/\/.*/g, '<span class="comment">$&</span>')
+//     .replace(/#.*/g, '<span class="comment">$&</span>');
+// }
 
-// Add some styles for highlighting
-const style = document.createElement('style');
-style.textContent = `
-  .code-display .keyword { color: #e67e22; font-weight: bold; }
-  .code-display .string { color: #27ae60; }
-  .code-display .number { color: #2980b9; }
-  .code-display .comment { color: #95a5a6; font-style: italic; }
-`;
+// // Add some styles for highlighting
+// const style = document.createElement('style');
+// style.textContent = `
+//   .code-display .keyword { color: #e67e22; font-weight: bold; }
+//   .code-display .string { color: #27ae60; }
+//   .code-display .number { color: #2980b9; }
+//   .code-display .comment { color: #95a5a6; font-style: italic; }
+// `;
 document.head.appendChild(style);

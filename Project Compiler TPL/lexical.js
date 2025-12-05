@@ -1,18 +1,17 @@
 export default function lexicalAnalyzer(sourceCode) {
 
-    const KEYWORD   = "\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|"
-                    + "default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|"
-                    + "import|instanceof|int|interface|long|native|new|package|private|protected|public|"
-                    + "return|short|static|strictfp|super|switch|synchronized|this|throw|throws|"
-                    + "transient|try|void|volatile|while)\\b";
+    // Defines primitive data types commonly used in Java
+    const KEYWORD   = "\\b(boolean|byte|char|double|float|int|long|short|String)\\b";
 
+    // Cannot start with a digit
     const IDENTIFIER   = "\\b[A-Za-z_$][A-Za-z0-9_$]*\\b";
 
-    const INT_LITERAL  = "0[bB][01]+|0[xX][0-9a-fA-F]+|0[0-7]*|[1-9][0-9]*";
+    // 
+    const INT_LITERAL  = "0|[1-9][0-9]*";
 
-    const FLOAT_LITERAL= "[0-9]+\\.[0-9]*([eE][+-]?[0-9]+)?[fFdD]?|[0-9]+[eE][+-]?[0-9]+[fFdD]?";
+    const FLOAT_LITERAL= "[0-9]+\\.[0-9]*";
 
-    const CHAR_LITERAL = "'(\\\\.|[^\\\\'])'";
+    const CHAR_LITERAL = "'[^']'";
 
     const STRING_LITERAL = "\"([^\"\\\\]|\\\\.)*\"";
 
@@ -20,15 +19,15 @@ export default function lexicalAnalyzer(sourceCode) {
 
     const NULL_LITERAL = "\\bnull\\b";
 
-    const OPERATOR = "(\\+\\+|--|==|!=|<=|>=|&&|\\|\\||<<|>>>|>>|->|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=|\\+|-|\\*|/|%|=|<|>|!|~|\\^)";
+    const OPERATOR = "=";
 
-    const SEPARATOR = "[(){}\\[\\];,\\.]";
+    const SEPARATOR = "[;,]";
 
     const LINE_COMMENT = "//[^\\n]*";
 
     const BLOCK_COMMENT = "/\\*[^*]*\\*+([^/*][^*]*\\*+)*/";
-
-    const WHITESPACE = "[ \\t\\r\\n]+";
+    
+    const WHITESPACE = "\\s+";
 
     const tokens = [];
     let current = 0;
