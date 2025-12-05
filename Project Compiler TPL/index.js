@@ -33,14 +33,14 @@ fileInput.addEventListener('change', () => {
     // fileNameSpan.textContent = `Loaded: ${file.name}`;
 
     resetAll();
-    enablePhase(lexicalBtn, 1);
+    enablePhase(lexicalBtn, null, 0);
     updateProgress(0);
   };
   reader.readAsText(file);
 });
 
 //Buttons
-import lexicalAnalyzer from "./lexical.js";
+import lexicalAnalyzer, { lexicalValidCheck } from "./lexical.js";
 import syntaxAnalyzer from "./syntax.js";
 import semanticAnalyzer from "./semantic.js";
 
@@ -51,19 +51,23 @@ function performLexical() {
   resultArea.textContent = tokens
     .map(token => `Type: ${token.type.padEnd(15)} Value: '${token.value}'`)
     .join('\n');
-  enablePhase(syntaxBtn, 2);
+  lexicalValidCheck();
+  enablePhase(syntaxBtn, lexicalBtn, 1);
 }
+
+let syntaxArray = [];
 syntaxBtn.addEventListener('click', () => performSyntax());
 function performSyntax() {
+  syntaxArray = syntaxAnalyzer(tokens);
   resultArea.textContent = syntaxAnalyzer(tokens);
-  enablePhase(semanticBtn, 3);
+  enablePhase(semanticBtn, syntaxBtn, 2);
 }
 
 semanticBtn.addEventListener('click', () => performSemantic());
 function performSemantic() {
   // Placeholder for semantic analysis
   resultArea.textContent += '\n\nSemantic Analysis: (Not Implemented)';
-  updateProgress(100);
+  enablePhase(null, semanticBtn,  3);
 }
 
 clearBtn.addEventListener('click', () => resetAll(true));
@@ -75,9 +79,17 @@ copyBtn.addEventListener('click', () => {
 });
 
 //UI Functions
-function enablePhase(btn, step) {
-  btn.classList.add('enabled');
-  btn.disabled = false;
+function enablePhase(btnEnable, btnDisable, step) {
+
+  if (btnEnable){
+    btnEnable.classList.add('enabled');
+    btnEnable.disabled = false;
+  }
+
+  if (btnDisable) {
+    btnDisable.classList.remove('enabled');
+    btnDisable.disabled = true;
+  }
   updateProgress(step * 33);
 }
 
@@ -102,7 +114,8 @@ function resetAll(clearCode = false) {
     resultArea.textContent = '';
     sourceCode = '';
     fileNameSpan.textContent = 'Upload Source Code';
-    langBadge.textContent = 'Unknown';
+    langBadge.textContent = 'Java';
+    fileInput.value = '';
     // currentLang = 'Unknown';
   } else {
     resultArea.textContent = 'Click "Lexical Analysis" to begin...';
@@ -132,4 +145,4 @@ function resetAll(clearCode = false) {
 //   .code-display .number { color: #2980b9; }
 //   .code-display .comment { color: #95a5a6; font-style: italic; }
 // `;
-document.head.appendChild(style);
+// document.head.appendChild(style);

@@ -1,3 +1,5 @@
+let lexicalValid = true;
+
 export default function lexicalAnalyzer(sourceCode) {
 
     // Defines primitive data types commonly used in Java
@@ -61,8 +63,13 @@ export default function lexicalAnalyzer(sourceCode) {
         }
         if (!matched) {
             tokens.push({ type: 'UNKNOWN', value: sourceCode[current] });
+            lexicalValid = false;
             current++;
         }
     }
     return tokens;
+}
+
+export function lexicalValidCheck(){
+    return lexicalValid;
 }
