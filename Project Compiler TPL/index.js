@@ -41,19 +41,19 @@ fileInput.addEventListener('change', () => {
 
 //Buttons
 import lexicalAnalyzer, { lexicalValidCheck } from "./lexical.js";
-import syntaxAnalyzer from "./syntax.js";
+import syntaxAnalyzer, { syntaxValidCheck } from "./syntax.js";
 import semanticAnalyzer from "./semantic.js";
 
 let tokens = [];
 lexicalBtn.addEventListener('click', () => performLexical());
 function performLexical() {
   tokens = lexicalAnalyzer(sourceCode);
-  if(lexicalValidCheck() == false){  
-    resultArea.textContent = '🛑 Lexical Analysis Failed: Unknown tokens detected.\n\n';
-  }
-  else {
+  if(lexicalValidCheck() == true){  
     resultArea.textContent = '✅ Lexical Analysis Completed Successfully.\n\n';
     enablePhase(syntaxBtn, lexicalBtn, 1);
+  }
+  else {
+    resultArea.textContent = '🛑 Lexical Analysis Failed: Unknown tokens detected.\n\n';
   }
   resultArea.textContent += tokens
     .map(token => `Type: ${token.type.padEnd(15)} Value: '${token.value}'`)
@@ -63,9 +63,11 @@ function performLexical() {
 
 syntaxBtn.addEventListener('click', () => performSyntax());
 function performSyntax() {
-  let syntaxArray = 
+  if(syntaxValidCheck() == true){
+    enablePhase(semanticBtn, syntaxBtn, 2);
+  }
   resultArea.textContent = syntaxAnalyzer(tokens);
-  enablePhase(semanticBtn, syntaxBtn, 2);
+  
 }
 
 semanticBtn.addEventListener('click', () => performSemantic());

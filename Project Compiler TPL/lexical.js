@@ -2,6 +2,8 @@ let lexicalValid = true;
 
 export default function lexicalAnalyzer(sourceCode) {
 
+    lexicalValid = true;
+
     // Defines primitive data types commonly used in Java
     const KEYWORD   = "\\b(boolean|byte|char|double|float|int|long|short|String)\\b";
 

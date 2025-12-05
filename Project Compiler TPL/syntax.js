@@ -1,4 +1,7 @@
+let syntaxValid = true;
 export default function syntaxAnalyzer(tokens) {
+
+    syntaxValid = true;
     // Java syntax rules. Literals are compiled in one array to be iterated through.
     const rules = [
         "KEYWORD",
@@ -40,20 +43,27 @@ export default function syntaxAnalyzer(tokens) {
                 continue;
             }
             else {
-                return `Code 2: Syntax Error: Expected LITERAL but found ${token.type} ('${token.value}')`;
+                syntaxValid = false;
+                return `🛑 Code 2: Syntax Error: Expected LITERAL but found ${token.type} ('${token.value}')`;
             }
         }
 
         // If token and rule isn't equal, throw an error.
         else {
-            return `Code 1: Syntax Error: Expected ${rules[i]} but found ${token.type} ('${token.value}')`;
+            syntaxValid = false;
+            return `🛑 Code 1: Syntax Error: Expected ${rules[i]} but found ${token.type} ('${token.value}')`;
         }
     }
 
     // if index isn't reset to 0, that means syntax is not complete. Throw an error.
     if (i !== 0) {
-        return `Code 3: Syntax Error: Incomplete statement at token '${tokens[tokens.length - 1].value}', expected ${rules[i]}.`;
+        syntaxValid = false;
+        return `🛑 Code 3: Syntax Error: Incomplete statement at token '${tokens[tokens.length - 1].value}', expected ${rules[i]}.`;
     }
 
-    return `Code 0: Syntax of ${validDeclarations} variable declarations are all valid.`;
+    return `✅ Code 0: Syntax of ${validDeclarations} variable declarations are all valid.`;
+}
+
+export function syntaxValidCheck() {
+    return syntaxValid;
 }
