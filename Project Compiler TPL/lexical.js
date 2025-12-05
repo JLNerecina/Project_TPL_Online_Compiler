@@ -49,6 +49,9 @@ export default function lexicalAnalyzer(sourceCode) {
         { type: 'OPERATOR', regex: OPERATOR }
     ];
 
+    // Lexical Analysis Loop
+    // Scans through the source code character by character
+    // Matches tokens based on defined regex patterns
     while (current < sourceCode.length) {
         let matched = false;
         for (const matcher of tokenMatchers) {
